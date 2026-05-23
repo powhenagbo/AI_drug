@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alzheimer | inactive | CHEMBL4982613 | pIC50: 4.52</title>
+  <style>
+    body  { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f7; }
+    .card { max-width: 980px; margin: auto; background: white; padding: 20px;
+             border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    h1   { margin-top: 0; font-size: 1.4rem; }
+    p    { color: #444; line-height: 1.4; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Alzheimer | inactive | CHEMBL4982613 | pIC50: 4.52</h1>
+    <p>Interactive 3-D viewer generated from SMILES.</p>
+    <div id="3dmolviewer_1777258960853228"  style="position: relative; width: 900px; height: 600px;">
+        <p id="3dmolwarning_1777258960853228" style="background-color:#ffcccc;color:black">3Dmol.js failed to load for some reason.  Please check your browser console for error messages.<br></p>
+        </div>
+<script>
+
+var loadScriptAsync = function(uri){
+  return new Promise((resolve, reject) => {
+    //this is to ignore the existence of requirejs amd
+    var savedexports, savedmodule;
+    if (typeof exports !== 'undefined') savedexports = exports;
+    else exports = {}
+    if (typeof module !== 'undefined') savedmodule = module;
+    else module = {}
+
+    var tag = document.createElement('script');
+    tag.src = uri;
+    tag.async = true;
+    tag.onload = () => {
+        exports = savedexports;
+        module = savedmodule;
+        resolve();
+    };
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+});
+};
+
+if(typeof $3Dmolpromise === 'undefined') {
+$3Dmolpromise = null;
+  $3Dmolpromise = loadScriptAsync('https://cdn.jsdelivr.net/npm/3dmol@2.5.4/build/3Dmol-min.js');
+}
+
+var viewer_1777258960853228 = null;
+var warn = document.getElementById("3dmolwarning_1777258960853228");
+if(warn) {
+    warn.parentNode.removeChild(warn);
+}
+$3Dmolpromise.then(function() {
+viewer_1777258960853228 = $3Dmol.createViewer(document.getElementById("3dmolviewer_1777258960853228"),{backgroundColor:"white"});
+viewer_1777258960853228.zoomTo();
+	viewer_1777258960853228.addModel("\n     RDKit          3D\n\n 38 40  0  0  0  0  0  0  0  0999 V2000\n    7.0035   -0.5164    1.4032 C   0  0  0  0  0  0  0  0  0  0  0  0\n    5.7098   -0.5168    0.6550 C   0  0  0  0  0  0  0  0  0  0  0  0\n    5.6521   -0.8284   -0.6995 C   0  0  0  0  0  0  0  0  0  0  0  0\n    4.4269   -0.7802   -1.3640 C   0  0  0  0  0  0  0  0  0  0  0  0\n    3.2753   -0.4043   -0.6720 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.0602   -0.3897   -1.3793 N   0  0  0  0  0  0  0  0  0  0  0  0\n    0.7725   -0.1333   -0.9019 C   0  0  0  0  0  0  0  0  0  0  0  0\n    0.3314   -0.5075    0.3530 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.9893   -0.2480    0.7314 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.8687    0.3636   -0.1516 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.1826    0.6466    0.2079 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.9372   -0.3312    1.0096 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.3272   -0.6201    0.3957 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -6.1729    0.5665    0.1729 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.3627    1.7437   -0.1972 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.9598    1.4303   -0.7639 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.4009    0.7175   -1.3665 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.0913    0.4566   -1.7487 N   0  0  0  0  0  0  0  0  0  0  0  0\n    3.3218   -0.1044    0.6422 N   0  0  0  0  0  0  0  0  0  0  0  0\n    4.5204   -0.1521    1.2689 C   0  0  0  0  0  0  0  0  0  0  0  0\n    6.8440   -0.7459    2.4621 H   0  0  0  0  0  0  0  0  0  0  0  0\n    7.6837   -1.2770    1.0054 H   0  0  0  0  0  0  0  0  0  0  0  0\n    7.4838    0.4637    1.3231 H   0  0  0  0  0  0  0  0  0  0  0  0\n    6.5487   -1.1122   -1.2443 H   0  0  0  0  0  0  0  0  0  0  0  0\n    4.3766   -1.0400   -2.4166 H   0  0  0  0  0  0  0  0  0  0  0  0\n    2.1473    0.0477   -2.2888 H   0  0  0  0  0  0  0  0  0  0  0  0\n    0.9992   -0.9985    1.0521 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.3041   -0.5129    1.7346 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.4120   -1.2901    1.0952 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.0586    0.0697    2.0230 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.8716   -1.3167    1.0425 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.1841   -1.1292   -0.5665 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -6.8319    0.3578   -0.5765 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.2498    2.3612    0.7026 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.9233    2.3466   -0.9205 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.0645    0.8808   -1.7087 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.4540    2.3807   -0.9746 H   0  0  0  0  0  0  0  0  0  0  0  0\n    4.4894    0.1220    2.3204 H   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\n  2  3  2  0\n  3  4  1  0\n  4  5  2  0\n  5  6  1  0\n  6  7  1  0\n  7  8  2  0\n  8  9  1  0\n  9 10  2  0\n 10 11  1  0\n 11 12  1  0\n 12 13  1  0\n 13 14  1  0\n 14 15  1  0\n 15 16  1  0\n 10 17  1  0\n 17 18  2  0\n  5 19  1  0\n 19 20  2  0\n 20  2  1  0\n 18  7  1  0\n 16 11  1  0\n  1 21  1  0\n  1 22  1  0\n  1 23  1  0\n  3 24  1  0\n  4 25  1  0\n  6 26  1  0\n  8 27  1  0\n  9 28  1  0\n 12 29  1  0\n 12 30  1  0\n 13 31  1  0\n 13 32  1  0\n 14 33  1  0\n 15 34  1  0\n 15 35  1  0\n 16 36  1  0\n 16 37  1  0\n 20 38  1  0\nM  END\n","mol");
+	viewer_1777258960853228.setStyle({"stick": {}});
+	viewer_1777258960853228.addSurface(1,{"opacity": 0.25});
+	viewer_1777258960853228.setBackgroundColor("white");
+	viewer_1777258960853228.zoomTo();
+viewer_1777258960853228.render();
+});
+</script>
+  </div>
+</body>
+</html>

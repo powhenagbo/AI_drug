@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alzheimer | active | CHEMBL4877696 | pIC50: 6.26</title>
+  <style>
+    body  { font-family: Arial, sans-serif; margin: 24px; background: #f7f7f7; }
+    .card { max-width: 980px; margin: auto; background: white; padding: 20px;
+             border-radius: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    h1   { margin-top: 0; font-size: 1.4rem; }
+    p    { color: #444; line-height: 1.4; }
+    code { background: #f0f0f0; padding: 2px 6px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Alzheimer | active | CHEMBL4877696 | pIC50: 6.26</h1>
+    <p>Interactive 3-D viewer generated from SMILES.</p>
+    <div id="3dmolviewer_177725896098283"  style="position: relative; width: 900px; height: 600px;">
+        <p id="3dmolwarning_177725896098283" style="background-color:#ffcccc;color:black">3Dmol.js failed to load for some reason.  Please check your browser console for error messages.<br></p>
+        </div>
+<script>
+
+var loadScriptAsync = function(uri){
+  return new Promise((resolve, reject) => {
+    //this is to ignore the existence of requirejs amd
+    var savedexports, savedmodule;
+    if (typeof exports !== 'undefined') savedexports = exports;
+    else exports = {}
+    if (typeof module !== 'undefined') savedmodule = module;
+    else module = {}
+
+    var tag = document.createElement('script');
+    tag.src = uri;
+    tag.async = true;
+    tag.onload = () => {
+        exports = savedexports;
+        module = savedmodule;
+        resolve();
+    };
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+});
+};
+
+if(typeof $3Dmolpromise === 'undefined') {
+$3Dmolpromise = null;
+  $3Dmolpromise = loadScriptAsync('https://cdn.jsdelivr.net/npm/3dmol@2.5.4/build/3Dmol-min.js');
+}
+
+var viewer_177725896098283 = null;
+var warn = document.getElementById("3dmolwarning_177725896098283");
+if(warn) {
+    warn.parentNode.removeChild(warn);
+}
+$3Dmolpromise.then(function() {
+viewer_177725896098283 = $3Dmol.createViewer(document.getElementById("3dmolviewer_177725896098283"),{backgroundColor:"white"});
+viewer_177725896098283.zoomTo();
+	viewer_177725896098283.addModel("\n     RDKit          3D\n\n 34 35  0  0  0  0  0  0  0  0999 V2000\n   -5.0338    1.9586   -0.3245 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.0093    0.4602   -0.5776 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -3.7339   -0.1297   -0.1847 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -2.7704   -0.1852   -1.1605 N   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.6169   -0.6614   -0.8246 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.2021   -1.1298    0.5215 C   0  0  0  0  0  0  0  0  0  0  0  0\n    0.0817   -1.6274    0.6984 N   0  0  0  0  0  0  0  0  0  0  0  0\n    1.2928   -1.0223    0.2911 C   0  0  0  0  0  0  0  0  0  0  0  0\n    1.3888    0.2933   -0.1753 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.6187    0.8229   -0.5833 C   0  0  0  0  0  0  0  0  0  0  0  0\n    3.7806    0.0433   -0.5445 C   0  0  0  0  0  0  0  0  0  0  0  0\n    5.1079    0.6218   -0.9614 C   0  0  0  0  0  0  0  0  0  0  0  0\n    5.7888    1.2476    0.1650 N   0  0  0  0  0  0  0  0  0  0  0  0\n    3.6918   -1.2706   -0.0724 C   0  0  0  0  0  0  0  0  0  0  0  0\n    2.4615   -1.7952    0.3354 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -2.1893   -1.1103    1.4281 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -1.9179   -1.6910    3.0395 Cl  0  0  0  0  0  0  0  0  0  0  0  0\n   -3.5400   -0.5579    1.1252 C   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.4079   -0.4894    1.9944 O   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.9957    2.3809   -0.6305 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.8831    2.1822    0.7366 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -4.2422    2.4641   -0.8874 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.1785    0.2521   -1.6403 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -5.8174   -0.0207   -0.0154 H   0  0  0  0  0  0  0  0  0  0  0  0\n   -0.8538   -0.7460   -1.6162 H   0  0  0  0  0  0  0  0  0  0  0  0\n    0.2023   -2.0837    1.6042 H   0  0  0  0  0  0  0  0  0  0  0  0\n    0.5206    0.9455   -0.2064 H   0  0  0  0  0  0  0  0  0  0  0  0\n    2.6630    1.8534   -0.9307 H   0  0  0  0  0  0  0  0  0  0  0  0\n    5.7442   -0.1640   -1.3845 H   0  0  0  0  0  0  0  0  0  0  0  0\n    4.9626    1.3597   -1.7587 H   0  0  0  0  0  0  0  0  0  0  0  0\n    5.1825    1.9669    0.5567 H   0  0  0  0  0  0  0  0  0  0  0  0\n    5.9038    0.5561    0.9046 H   0  0  0  0  0  0  0  0  0  0  0  0\n    4.5797   -1.8977   -0.0244 H   0  0  0  0  0  0  0  0  0  0  0  0\n    2.4207   -2.8263    0.6800 H   0  0  0  0  0  0  0  0  0  0  0  0\n  1  2  1  0\n  2  3  1  0\n  3  4  1  0\n  4  5  2  0\n  5  6  1  0\n  6  7  1  0\n  7  8  1  0\n  8  9  2  0\n  9 10  1  0\n 10 11  2  0\n 11 12  1  0\n 12 13  1  0\n 11 14  1  0\n 14 15  2  0\n  6 16  2  0\n 16 17  1  0\n 16 18  1  0\n 18 19  2  0\n 18  3  1  0\n 15  8  1  0\n  1 20  1  0\n  1 21  1  0\n  1 22  1  0\n  2 23  1  0\n  2 24  1  0\n  5 25  1  0\n  7 26  1  0\n  9 27  1  0\n 10 28  1  0\n 12 29  1  0\n 12 30  1  0\n 13 31  1  0\n 13 32  1  0\n 14 33  1  0\n 15 34  1  0\nM  END\n","mol");
+	viewer_177725896098283.setStyle({"stick": {}});
+	viewer_177725896098283.addSurface(1,{"opacity": 0.25});
+	viewer_177725896098283.setBackgroundColor("white");
+	viewer_177725896098283.zoomTo();
+viewer_177725896098283.render();
+});
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SMILES 3D Molecular Viewer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/3Dmol/2.0.1/3Dmol-min.js"></script>
+  <script src="https://unpkg.com/@rdkit/rdkit/Code/MinimalLib/dist/RDKit_minimal.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#1a1a1a;min-height:100vh}
+    header{background:#0d1117;padding:1rem 2rem;display:flex;align-items:center;gap:12px;border-bottom:1px solid #21262d}
+    header h1{font-size:16px;font-weight:500;color:#e6edf3}
+    .badge{font-size:11px;padding:3px 8px;background:#185FA5;color:#fff;border-radius:20px}
+    .badge.green{background:#1D9E75}
+    .container{max-width:1100px;margin:2rem auto;padding:0 1.5rem;display:grid;gap:1.25rem}
+    .card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.25rem 1.5rem}
+    .card-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.6px;margin-bottom:.75rem}
+    input,select{width:100%;height:40px;padding:0 12px;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;color:#1a1a1a;background:#fff;transition:border-color .15s}
+    input:focus,select:focus{outline:none;border-color:#185FA5;box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+    .input-row{display:flex;gap:8px}
+    .input-row input{flex:1}
+    .btn{height:40px;padding:0 18px;border:1px solid #d0d0d0;border-radius:8px;background:#fff;color:#1a1a1a;cursor:pointer;font-size:13px;font-weight:500;white-space:nowrap;transition:background .12s}
+    .btn:hover{background:#f0f0f0}
+    .btn.primary{background:#185FA5;color:#fff;border-color:#185FA5}
+    .btn.primary:hover{background:#0C447C}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+    .pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+    .pill{padding:5px 13px;border:1px solid #d0d0d0;border-radius:20px;background:#f8f8f8;color:#555;cursor:pointer;font-size:12px;transition:all .12s}
+    .pill:hover{border-color:#185FA5;color:#185FA5}
+    .pill.active{background:#E6F1FB;border-color:#185FA5;color:#0C447C;font-weight:500}
+    .db-row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+    .db-row>div{display:flex;flex-direction:column;gap:4px}
+    .db-row label{font-size:12px;color:#555}
+    .compound-list{display:grid;gap:6px;max-height:260px;overflow-y:auto;margin-top:10px}
+    .compound-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid #e8e8e8;border-radius:8px;cursor:pointer;transition:border-color .12s,background .12s;font-size:13px}
+    .compound-item:hover{border-color:#185FA5;background:#f0f7ff}
+    .compound-item.selected{border-color:#185FA5;background:#E6F1FB}
+    .cid{font-family:monospace;font-size:11px;color:#888;min-width:110px}
+    .cls{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+    .cls.active{background:#d4f5e9;color:#0a6640}
+    .cls.inactive{background:#fde8e8;color:#a01c1c}
+    .cls.intermediate{background:#fff3cd;color:#856404}
+    .pic50{margin-left:auto;font-size:12px;color:#555}
+    #viewer-box{width:100%;height:460px;border-radius:10px;overflow:hidden;background:#0d1117;position:relative}
+    #viewer-box canvas{border-radius:10px}
+    #loading-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#8b949e;font-size:14px;text-align:center;pointer-events:none}
+    .controls-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .ctrl-label{font-size:12px;color:#777;margin-right:2px}
+    .ctrl-btn{padding:5px 11px;border:1px solid #d0d0d0;border-radius:6px;background:#fff;color:#555;cursor:pointer;font-size:12px}
+    .ctrl-btn:hover{background:#f0f0f0}
+    .ctrl-btn.sel{background:#E6F1FB;color:#0C447C;border-color:#378ADD;font-weight:500}
+    .divider{width:1px;height:20px;background:#e0e0e0;margin:0 4px}
+    .spin-wrap{margin-left:auto;display:flex;align-items:center;gap:8px}
+    .toggle{width:36px;height:20px;border-radius:10px;background:#ccc;cursor:pointer;position:relative;border:none;transition:background .2s}
+    .toggle.on{background:#185FA5}
+    .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .15s}
+    .toggle.on::after{left:18px}
+    .status-bar{margin-top:10px;font-size:12px;color:#777;min-height:18px}
+    .status-bar .ok{color:#1D9E75}
+    .status-bar .err{color:#D85A30}
+    .mol-info{display:flex;gap:16px;flex-wrap:wrap;padding:10px 14px;background:#f8f9fa;border:1px solid #e8e8e8;border-radius:8px;margin-top:10px;font-size:12px;color:#555}
+    .mol-info span strong{color:#1a1a1a}
+    .empty-state{text-align:center;padding:2rem 1rem;color:#aaa;font-size:13px}
+    footer{text-align:center;font-size:12px;color:#aaa;padding:2rem}
+    footer a{color:#185FA5;text-decoration:none}
+  </style>
+</head>
+<body>
+<header>
+  <h1>SMILES 3D Molecular Viewer</h1>
+  <span class="badge">RDKit + 3Dmol.js</span>
+  <span class="badge green">Pipeline DB</span>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <div class="card-title">Manual SMILES input</div>
+    <div class="input-row">
+      <input type="text" id="smiles-in" placeholder="Enter SMILES, e.g. CC(=O)Oc1ccccc1C(=O)O" />
+      <button class="btn primary" onclick="loadFromInput()">View in 3D</button>
+      <button class="btn" onclick="clearViewer()">Clear</button>
+    </div>
+    <div class="pill-row">
+      <span style="font-size:12px;color:#888;align-self:center">Examples:</span>
+      <button class="pill" onclick="loadExample(this,'CC(=O)Oc1ccccc1C(=O)O','Aspirin')">Aspirin</button>
+      <button class="pill" onclick="loadExample(this,'Cn1cnc2c1c(=O)n(c(=O)n2C)C','Caffeine')">Caffeine</button>
+      <button class="pill" onclick="loadExample(this,'CC(C)Cc1ccc(cc1)C(C)C(=O)O','Ibuprofen')">Ibuprofen</button>
+      <button class="pill" onclick="loadExample(this,'C(C1C(C(C(C(O1)O)O)O)O)O','Glucose')">Glucose</button>
+      <button class="pill" onclick="loadExample(this,'CC12CCC3C(C1CCC2O)CCC4=CC(=O)CCC34C','Testosterone')">Testosterone</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Load from your pipeline database</div>
+    <div class="db-row">
+      <div style="flex:1;min-width:160px"><label>Disease / run name</label><input type="text" id="disease-input" placeholder="e.g. diphtheria" /></div>
+      <div style="min-width:140px"><label>Activity class</label>
+        <select id="class-filter">
+          <option value="">All classes</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="intermediate">Intermediate</option>
+        </select>
+      </div>
+      <div style="min-width:80px"><label>Limit</label><input type="number" id="limit-input" value="30" min="1" max="200" /></div>
+      <button class="btn primary" id="db-btn" onclick="loadFromDB()">Load compounds</button>
+    </div>
+    <div id="compound-list-wrap"><div class="empty-state">Enter a disease name and click Load compounds.</div></div>
+  </div>
+
+  <div class="card">
+    <div id="viewer-box"><div id="loading-msg">Initializing chemistry engine…</div></div>
+    <div id="mol-info" class="mol-info" style="display:none"></div>
+    <div class="controls-bar">
+      <span class="ctrl-label">Style</span>
+      <button class="ctrl-btn sel" id="btn-stick"  onclick="setStyle('stick')">Stick</button>
+      <button class="ctrl-btn"    id="btn-bs"      onclick="setStyle('bs')">Ball &amp; stick</button>
+      <button class="ctrl-btn"    id="btn-sphere"  onclick="setStyle('sphere')">Sphere</button>
+      <button class="ctrl-btn"    id="btn-surface" onclick="setStyle('surface')">Surface</button>
+      <button class="ctrl-btn"    id="btn-line"    onclick="setStyle('line')">Wire</button>
+      <div class="divider"></div>
+      <span class="ctrl-label">Color</span>
+      <button class="ctrl-btn sel" id="col-element"  onclick="setColor('element')">Element</button>
+      <button class="ctrl-btn"     id="col-spectrum" onclick="setColor('spectrum')">Spectrum</button>
+      <button class="ctrl-btn"     id="col-chain"    onclick="setColor('chain')">Chain</button>
+      <div class="spin-wrap"><span class="ctrl-label">Spin</span><button class="toggle" id="spin-toggle" onclick="toggleSpin()"></button></div>
+    </div>
+    <div class="status-bar" id="status"></div>
+  </div>
+
+</div>
+
+<footer>Drug Discovery Agent &bull; Dept. of Bioinformatics, UALR &bull; <a href="http://127.0.0.1:8000/docs" target="_blank">API Docs</a></footer>
+
+<script>
+const API_BASE='http://127.0.0.1:8000';
+let viewer=null,RDKit=null,currentStyle='stick',currentColor='element',spinning=false,currentMolblock=null,allCompounds=[];
+
+window.initRDKitModule().then(rdk=>{RDKit=rdk;setupViewer();document.getElementById('loading-msg').textContent='Ready. Enter a SMILES or load compounds from your database.';setStatus('RDKit + 3Dmol.js ready.','ok');}).catch(e=>setStatus('RDKit failed: '+e,'err'));
+
+function setupViewer(){viewer=$3Dmol.createViewer(document.getElementById('viewer-box'),{backgroundColor:'0x0d1117',antialias:true});}
+
+function smilesToMolblock(smiles){if(!RDKit)return null;const mol=RDKit.get_mol(smiles.trim());if(!mol||!mol.is_valid()){mol&&mol.delete();return null;}mol.set_new_coords(true);const mb=mol.get_molblock();mol.delete();return mb;}
+
+function displayMolblock(mb){currentMolblock=mb;viewer.clear();viewer.addModel(mb,'mol');applyStyle();viewer.zoomTo();viewer.render();document.getElementById('loading-msg').style.display='none';}
+
+function applyStyle(){const cs=currentColor==='element'?$3Dmol.elementColors.rasmol:currentColor==='chain'?$3Dmol.elementColors.chainHetatm:{prop:'serial',gradient:new $3Dmol.Gradient.Rainbow()};viewer.setStyle({},{});if(currentStyle==='stick')viewer.setStyle({},{stick:{colorscheme:cs,radius:.12},sphere:{colorscheme:cs,radius:.22}});else if(currentStyle==='sphere')viewer.setStyle({},{sphere:{colorscheme:cs}});else if(currentStyle==='bs')viewer.setStyle({},{stick:{colorscheme:cs,radius:.10},sphere:{colorscheme:cs,radius:.38}});else if(currentStyle==='line')viewer.setStyle({},{line:{colorscheme:cs}});else if(currentStyle==='surface'){viewer.setStyle({},{stick:{colorscheme:cs,radius:.07}});viewer.addSurface($3Dmol.SurfaceType.VDW,{opacity:.72,colorscheme:cs});}viewer.render();}
+
+function setStyle(s){if(!currentMolblock)return;['stick','bs','sphere','surface','line'].forEach(n=>document.getElementById('btn-'+n).classList.toggle('sel',n===s));currentStyle=s;viewer.clear();viewer.addModel(currentMolblock,'mol');applyStyle();viewer.zoomTo();viewer.render();}
+function setColor(c){if(!currentMolblock)return;['element','spectrum','chain'].forEach(n=>document.getElementById('col-'+n).classList.toggle('sel',n===c));currentColor=c;viewer.clear();viewer.addModel(currentMolblock,'mol');applyStyle();viewer.zoomTo();viewer.render();}
+function toggleSpin(){spinning=!spinning;document.getElementById('spin-toggle').classList.toggle('on',spinning);spinning?viewer.spin('y',1):viewer.spin(false);}
+
+function setStatus(msg,type){const s=document.getElementById('status');s.innerHTML=type==='ok'?`<span class="ok">${msg}</span>`:type==='err'?`<span class="err">${msg}</span>`:msg;}
+
+function showMolInfo(c){const el=document.getElementById('mol-info');if(!c){el.style.display='none';return;}el.style.display='flex';el.innerHTML=`<span><strong>ID:</strong> ${c.molecule_chembl_id||'—'}</span><span><strong>Class:</strong> ${c.class||'—'}</span><span><strong>pIC50:</strong> ${c.pic50!=null?Number(c.pic50).toFixed(2):'—'}</span><span><strong>MW:</strong> ${c.mw!=null?Number(c.mw).toFixed(1):'—'}</span><span><strong>LogP:</strong> ${c.logp!=null?Number(c.logp).toFixed(2):'—'}</span><span><strong>HBD:</strong> ${c.num_h_donors??'—'}</span><span><strong>HBA:</strong> ${c.num_h_acceptors??'—'}</span>`;}
+
+function loadFromInput(){const s=document.getElementById('smiles-in').value.trim();if(!s){setStatus('Enter a SMILES.','err');return;}if(!RDKit){setStatus('Loading…','err');return;}setStatus('Generating 3D…');document.querySelectorAll('.pill,.compound-item').forEach(b=>b.classList.remove('active','selected'));setTimeout(()=>{const mb=smilesToMolblock(s);if(!mb){setStatus('Invalid SMILES.','err');return;}displayMolblock(mb);showMolInfo(null);setStatus('Rendered. Drag=rotate | Scroll=zoom | Right-click=pan.','ok');},10);}
+
+function loadExample(btn,smiles,name){document.getElementById('smiles-in').value=smiles;document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');if(!RDKit){setStatus('Loading…','err');return;}setTimeout(()=>{const mb=smilesToMolblock(smiles);if(!mb){setStatus('Could not generate 3D.','err');return;}displayMolblock(mb);showMolInfo(null);setStatus(name+' loaded.','ok');},10);}
+
+function clearViewer(){if(viewer){viewer.clear();viewer.render();}currentMolblock=null;document.getElementById('smiles-in').value='';document.querySelectorAll('.pill,.compound-item').forEach(b=>b.classList.remove('active','selected'));document.getElementById('loading-msg').style.display='';document.getElementById('loading-msg').textContent='Ready.';showMolInfo(null);setStatus('');if(spinning)toggleSpin();}
+
+async function loadFromDB(){const disease=document.getElementById('disease-input').value.trim();if(!disease){setStatus('Enter a disease name.','err');return;}const cls=document.getElementById('class-filter').value;const limit=document.getElementById('limit-input').value||30;const btn=document.getElementById('db-btn');btn.disabled=true;btn.textContent='Loading…';setStatus('Fetching from database…');try{let url=`${API_BASE}/compounds/${encodeURIComponent(disease)}?limit=${limit}`;if(cls)url+=`&activity_class=${cls}`;const res=await fetch(url);if(!res.ok)throw new Error(`HTTP ${res.status}`);const data=await res.json();if(!data.ok||!data.data||!data.data.compounds||!data.data.compounds.length){document.getElementById('compound-list-wrap').innerHTML=`<div class="empty-state">No compounds found for "${disease}". Run the pipeline first.</div>`;setStatus('No compounds found.','err');return;}allCompounds=data.data.compounds;renderCompoundList(allCompounds);setStatus(`Loaded ${allCompounds.length} compounds for "${disease}". Click one to view in 3D.`,'ok');}catch(e){document.getElementById('compound-list-wrap').innerHTML=`<div class="empty-state">Error: ${e.message}. Is the API running?</div>`;setStatus('API error: '+e.message,'err');}finally{btn.disabled=false;btn.textContent='Load compounds';}}
+
+function renderCompoundList(compounds){const wrap=document.getElementById('compound-list-wrap');if(!compounds.length){wrap.innerHTML='<div class="empty-state">No compounds.</div>';return;}const items=compounds.map((c,i)=>{const p=c.pic50!=null?Number(c.pic50).toFixed(2):'N/A';const cls=c.class||'unknown';return`<div class="compound-item" onclick="selectCompound(${i})" id="cmpd-${i}"><span class="cid">${c.molecule_chembl_id||'N/A'}</span><span class="cls ${cls}">${cls}</span><span style="font-size:11px;color:#777;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${c.smiles}">${c.smiles}</span><span class="pic50">pIC50 ${p}</span></div>`;}).join('');wrap.innerHTML=`<div class="compound-list">${items}</div>`;}
+
+function selectCompound(i){const c=allCompounds[i];if(!c||!c.smiles){setStatus('No SMILES.','err');return;}if(!RDKit){setStatus('Loading…','err');return;}document.querySelectorAll('.compound-item').forEach(el=>el.classList.remove('selected'));document.getElementById('cmpd-'+i).classList.add('selected');document.querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));document.getElementById('smiles-in').value=c.smiles;setStatus('Generating 3D…');setTimeout(()=>{const mb=smilesToMolblock(c.smiles);if(!mb){setStatus('Could not generate 3D.','err');return;}displayMolblock(mb);showMolInfo(c);setStatus(`${c.molecule_chembl_id||'Compound'} | class: ${c.class} | pIC50: ${c.pic50!=null?Number(c.pic50).toFixed(2):'N/A'}`,'ok');},10);}
+
+document.addEventListener('DOMContentLoaded',()=>{document.getElementById('smiles-in').addEventListener('keydown',e=>{if(e.key==='Enter')loadFromInput();});document.getElementById('disease-input').addEventListener('keydown',e=>{if(e.key==='Enter')loadFromDB();});});
+</script>
+</body>
+</html>
