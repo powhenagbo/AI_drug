@@ -83,7 +83,7 @@ class DrugDiscoveryAgentTools:
         self.db_enabled = db_enabled
         self.db_config: Dict[str, Any] = {
             "dbname": os.getenv("PGDATABASE", "drugdb"),
-            "user": os.getenv("PGUSER", os.getenv("USER", "postgres")),
+            "user": os.getenv("PGUSER"),
             "password": os.getenv("PGPASSWORD", ""),
             "host": os.getenv("PGHOST", "localhost"),
             "port": int(os.getenv("PGPORT", "5432")),

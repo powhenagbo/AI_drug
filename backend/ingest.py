@@ -48,7 +48,7 @@ def load_env() -> None:
 def get_conn():
     cfg = {
         "dbname":   os.getenv("PGDATABASE", "drugdb"),
-        "user":     os.getenv("PGUSER", os.getenv("USER", "postgres")),
+        "user":     os.getenv("PGUSER"),
         "password": os.getenv("PGPASSWORD", ""),
         "host":     os.getenv("PGHOST", "localhost"),
         "port":     int(os.getenv("PGPORT", "5432")),
